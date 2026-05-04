@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Gestor {
+  id              Int            @id @default(autoincrement())
+  nombre          String
+  apellidos       String
+  email           String         @unique
+  contrasena      String
+  telefono        String?
+  rol             String         @default("gestor") // admin/gestor
+  departamento    Departamento   @relation(fields: [id_departamento], references: [id])
+  id_departamento Int
+  
+  empresas_creadas   Empresa[]
+  contactos_creados  Contacto[]
+  mensajes           Mensaje[]
+  logs               Log[]
+  peticiones         Peticion[]
+}
+
+model Empresa {
+  id             Int       @id @default(autoincrement())
+  nombre         String
+  fecha_alta     DateTime  @default(now())
+  estado         Estado    @relation(fields: [estado_id], references: [id])
+  estado_id      Int
+  direccion      String?
+  telefono       String?
+  email          String?
+  web            String?
+  convenio       Boolean   @default(false)
+  fecha_convenio DateTime?
+  
+  creador        Gestor    @relation(fields: [creado_por], references: [id])
+  creado_por     Int
+  
+  contactos      Contacto[]
+  mensajes       Mensaje[]
+  intereses      Interes[] @relation("EmpresaIntereses")
+  logs           Log[]
+}
+
+model Contacto {
+  id         Int      @id @default(autoincrement())
+  empresa    Empresa  @relation(fields: [empresa_id], references: [id])
+  empresa_id Int
+  nombre     String
+  apellidos  String?
+  email      String?
+  telefono   String?
+  cargo      String?
+  created_at DateTime @default(now())
+  
+  creador    Gestor   @relation(fields: [creado_por], references: [id])
+  creado_por Int
+  
+  intereses  Interes[] @relation("ContactoIntereses")
+}
+
+model Mensaje {
+  id         Int      @id @default(autoincrement())
+  empresa    Empresa  @relation(fields: [empresa_id], references: [id])
+  empresa_id Int
+  gestor     Gestor   @relation(fields: [gestor_id], references: [id])
+  gestor_id  Int
+  tipo       String   @default("normal") // normal/infolium
+  mensaje    String
+  fecha      DateTime @default(now())
+  fijado     Boolean  @default(false)
+  logs       Log[]
+}
+
+model Interes {
+  id       Int       @id @default(autoincrement())
+  nombre   String    @unique
+  empresas Empresa[] @relation("EmpresaIntereses")
+  contactos Contacto[] @relation("ContactoIntereses")
+}
+
+model Log {
+  id          Int      @id @default(autoincrement())
+  gestor      Gestor   @relation(fields: [gestor_id], references: [id])
+  gestor_id   Int
+  empresa     Empresa? @relation(fields: [empresa_id], references: [id])
+  empresa_id  Int?
+  mensaje     Mensaje? @relation(fields: [mensaje_id], references: [id])
+  mensaje_id  Int?
+  descripcion String
+  fecha       DateTime @default(now())
+}
+
+model Departamento {
+  id     Int      @id @default(autoincrement())
+  nombre String   @unique
+  gestores Gestor[]
+}
+
+model Estado {
+  id      Int       @id @default(autoincrement())
+  nombre  String    @unique
+  empresas Empresa[]
+}
+
+model Peticion {
+  id          Int      @id @default(autoincrement())
+  titulo      String
+  descripcion String
+  estado      String   @default("Pendiente")
+  fecha       DateTime @default(now())
+  
+  gestor      Gestor   @relation(fields: [gestor_id], references: [id])
+  gestor_id   Int
+}
