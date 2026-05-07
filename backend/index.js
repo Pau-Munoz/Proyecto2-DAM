@@ -88,15 +88,34 @@ app.get('/api/auth/debug', authenticateToken, (req, res) => {
 // --- EMPRESAS (LEADS) ---
 app.get('/api/empresas/interactuadas', authenticateToken, async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
+  const q = req.query.q?.trim() || '';
+  const interesesParam = req.query.intereses || '';
+  const interesIds = interesesParam
+    ? interesesParam.split(',').map(id => parseInt(id)).filter(id => !isNaN(id))
+    : [];
+
   try {
+    const where = {
+      mensajes: {
+        some: { gestor_id: req.user.id }
+      }
+    };
+
+    if (q) {
+      where.nombre = { contains: q };
+    }
+
+    if (interesIds.length > 0) {
+      where.intereses = {
+        some: { id: { in: interesIds } }
+      };
+    }
+
     const empresas = await prisma.empresa.findMany({
-      where: {
-        mensajes: {
-          some: { gestor_id: req.user.id }
-        }
-      },
+      where,
       include: {
         estado: true,
+        intereses: true,
         mensajes: {
           include: { gestor: { select: { nombre: true, apellidos: true } } },
           orderBy: { fecha: 'desc' },
@@ -131,8 +150,8 @@ app.get('/api/empresas/interactuadas', authenticateToken, async (req, res) => {
 });
 
 app.get('/api/empresas', authenticateToken, async (req, res) => {
-  const { estado_id, departamento_id } = req.query;
-  console.log(`[FILTER] Request received - Estado: ${estado_id}, Dept: ${departamento_id}`);
+  const { estado_id, departamento_id, q, intereses } = req.query;
+  console.log(`[FILTER] Request received - Estado: ${estado_id}, Dept: ${departamento_id}, q: ${q}, intereses: ${intereses}`);
 
   try {
     const where = {};
@@ -151,6 +170,17 @@ app.get('/api/empresas', authenticateToken, async (req, res) => {
             id_departamento: dId
           }
         });
+      }
+    }
+
+    if (q && q.trim() !== '') {
+      filters.push({ nombre: { contains: q.trim() } });
+    }
+
+    if (intereses && intereses !== '') {
+      const interesIds = intereses.split(',').map(id => parseInt(id)).filter(id => !isNaN(id));
+      if (interesIds.length > 0) {
+        filters.push({ intereses: { some: { id: { in: interesIds } } } });
       }
     }
 
@@ -173,6 +203,7 @@ app.get('/api/empresas', authenticateToken, async (req, res) => {
             departamento: { select: { nombre: true } }
           } 
         }, 
+        intereses: true,
         mensajes: { 
           include: { gestor: { select: { nombre: true, apellidos: true } } }, 
           orderBy: { fecha: 'desc' }, 
