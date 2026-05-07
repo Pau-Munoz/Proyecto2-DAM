@@ -618,6 +618,33 @@ app.post('/api/intereses', authenticateToken, async (req, res) => {
   }
 });
 
+app.put('/api/intereses/:id', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { nombre } = req.body;
+  if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre es obligatorio' });
+  try {
+    const interes = await prisma.interes.update({ where: { id: parseInt(id) }, data: { nombre: nombre.trim() } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Etiqueta actualizada: ${nombre.trim()}` } });
+    res.json(interes);
+  } catch (error) {
+    if (error.code === 'P2002') return res.status(400).json({ error: 'Ya existe una etiqueta con ese nombre' });
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/intereses/:id', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const interes = await prisma.interes.findUnique({ where: { id: parseInt(id) } });
+    if (!interes) return res.status(404).json({ error: 'Etiqueta no encontrada' });
+    await prisma.interes.delete({ where: { id: parseInt(id) } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Etiqueta eliminada: ${interes.nombre}` } });
+    res.json({ message: 'Etiqueta eliminada' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/contactos/:id/intereses', authenticateToken, async (req, res) => {
   const { id } = req.params;
   try {
@@ -749,13 +776,93 @@ app.get('/api/logs', authenticateToken, isAdmin, async (req, res) => {
 
 // --- CATALOGOS ---
 app.get('/api/departamentos', authenticateToken, async (req, res) => {
-  const deps = await prisma.departamento.findMany();
+  const deps = await prisma.departamento.findMany({ orderBy: { nombre: 'asc' } });
   res.json(deps);
 });
 
+app.post('/api/departamentos', authenticateToken, isAdmin, async (req, res) => {
+  const { nombre } = req.body;
+  if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre es obligatorio' });
+  try {
+    const dep = await prisma.departamento.create({ data: { nombre: nombre.trim() } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Departamento creado: ${nombre.trim()}` } });
+    res.json(dep);
+  } catch (error) {
+    if (error.code === 'P2002') return res.status(400).json({ error: 'Ya existe un departamento con ese nombre' });
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/departamentos/:id', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { nombre } = req.body;
+  if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre es obligatorio' });
+  try {
+    const dep = await prisma.departamento.update({ where: { id: parseInt(id) }, data: { nombre: nombre.trim() } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Departamento actualizado: ${nombre.trim()}` } });
+    res.json(dep);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/departamentos/:id', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const dep = await prisma.departamento.findUnique({ where: { id: parseInt(id) } });
+    if (!dep) return res.status(404).json({ error: 'Departamento no encontrado' });
+    await prisma.departamento.delete({ where: { id: parseInt(id) } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Departamento eliminado: ${dep.nombre}` } });
+    res.json({ message: 'Departamento eliminado' });
+  } catch (error) {
+    if (error.code === 'P2003') return res.status(400).json({ error: 'No se puede eliminar: hay gestores o empresas vinculadas a este departamento' });
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get('/api/estados', authenticateToken, async (req, res) => {
-  const estados = await prisma.estado.findMany();
+  const estados = await prisma.estado.findMany({ orderBy: { nombre: 'asc' } });
   res.json(estados);
+});
+
+app.post('/api/estados', authenticateToken, isAdmin, async (req, res) => {
+  const { nombre } = req.body;
+  if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre es obligatorio' });
+  try {
+    const estado = await prisma.estado.create({ data: { nombre: nombre.trim() } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Estado creado: ${nombre.trim()}` } });
+    res.json(estado);
+  } catch (error) {
+    if (error.code === 'P2002') return res.status(400).json({ error: 'Ya existe un estado con ese nombre' });
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/estados/:id', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { nombre } = req.body;
+  if (!nombre?.trim()) return res.status(400).json({ error: 'El nombre es obligatorio' });
+  try {
+    const estado = await prisma.estado.update({ where: { id: parseInt(id) }, data: { nombre: nombre.trim() } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Estado actualizado: ${nombre.trim()}` } });
+    res.json(estado);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/estados/:id', authenticateToken, isAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const estado = await prisma.estado.findUnique({ where: { id: parseInt(id) } });
+    if (!estado) return res.status(404).json({ error: 'Estado no encontrado' });
+    await prisma.estado.delete({ where: { id: parseInt(id) } });
+    await prisma.log.create({ data: { gestor_id: req.user.id, descripcion: `Estado eliminado: ${estado.nombre}` } });
+    res.json({ message: 'Estado eliminado' });
+  } catch (error) {
+    if (error.code === 'P2003') return res.status(400).json({ error: 'No se puede eliminar: hay empresas con este estado' });
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post('/api/gestores', authenticateToken, isAdmin, async (req, res) => {

@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Buscador from './pages/Buscador';
 import FichaEmpresa from './pages/FichaEmpresa';
 import Peticiones from './pages/Peticiones';
+import Mantenimiento from './pages/Mantenimiento';
 import MainLayout from './components/MainLayout';
 
 const Placeholder = ({ name }) => (
@@ -59,7 +60,7 @@ function App() {
                 <Route path="/empresas" element={<Empresas />} />
                 <Route path="/empresas/:id" element={<FichaEmpresa />} />
                 <Route path="/gestores" element={<Gestores />} />
-                <Route path="/mantenimientos" element={<Placeholder name="Mantenimientos" />} />
+                <Route path="/mantenimientos" element={<Mantenimiento />} />
                 <Route path="/buscador" element={<Buscador />} />
                 <Route path="/peticiones" element={<Peticiones />} />
                 <Route path="/logs" element={<Logs />} />
