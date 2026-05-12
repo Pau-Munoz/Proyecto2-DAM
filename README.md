@@ -1,69 +1,65 @@
-# Proyecto de DAM - Gestión de Empresas e Interacciones (CRM)
 
-Este es nuestro segundo proyecto para el ciclo de **Desarrollo de Aplicaciones Multiplataforma (DAM)**. Consiste en una aplicación web tipo CRM para gestionar clientes, empresas y los contactos asociados, además de llevar un control de qué se ha hablado con cada uno.
+Proyecto de DAM - Gestión de Empresas e Interacciones (CRM)
 
----
+Este es nuestro proyecto para el ciclo de Desarrollo de Aplicaciones Multiplataforma (DAM). Consiste en una aplicación web de tipo CRM para gestionar clientes, empresas y contactos, y llevar un registro de las comunicaciones con cada uno de ellos.
 
-## 🚀 Tecnologías que hemos usado
+Tecnologías utilizadas
 
-Para este proyecto hemos montado un entorno **MERN** (bueno, casi, porque usamos SQLite en vez de MongoDB):
+El proyecto usa un stack MERN adaptado: en lugar de MongoDB, tiramos por SQLite, que nos resultaba más cómodo para este tipo de proyecto.
 
-### **Frontend**
-*   **React 19**: Para toda la interfaz y los componentes.
-*   **Vite**: Para que el desarrollo sea más rápido.
-*   **React Router**: Para movernos entre las páginas (Buscador, Ficha de empresa, Login, etc.).
-*   **Axios**: Para hacer las peticiones a la API del backend.
-*   **Lucide React**: Para los iconos de la web.
+Frontend
+React 19 para la interfaz y los componentes.
+Vite como herramienta de desarrollo.
+React Router para la navegación entre vistas (Buscador, Ficha de empresa, Login...).
+Axios para las peticiones al backend.
+Lucide React para los iconos.
 
-### **Backend**
-*   **Node.js y Express**: Para crear el servidor y todos los endpoints de la API.
-*   **Prisma ORM**: Para manejar la base de datos de forma más fácil sin escribir SQL puro.
-*   **SQLite**: La base de datos, que es un archivo `.db` y así es más fácil de mover.
-*   **JWT y Bcrypt**: Para que el login sea seguro y las contraseñas estén encriptadas.
+Backend
+Node.js con Express para el servidor y la API REST.
+Prisma ORM para interactuar con la base de datos sin escribir SQL a mano.
+SQLite como base de datos, guardada en un archivo .db para facilitar su portabilidad.
+JWT y Bcrypt para el sistema de autenticación y el cifrado de contraseñas.
 
----
+Cómo funciona
+La idea es que los Gestores puedan dar de alta empresas que son posibles clientes y hacer seguimiento de cada una.
 
-## 🧠 ¿Cómo funciona el proyecto?
+Usuarios y roles: 
+hay dos tipos de usuario. El Admin tiene acceso completo y puede borrar registros; el Gestor es el perfil operativo, el que trabaja día a día con las empresas.
 
-La idea principal es que los **Gestores** (nosotros) podamos dar de alta **Empresas** que son posibles clientes.
+Gestión de empresas: 
+cada empresa tiene sus datos de contacto (web, teléfono, email) y un estado que indica en qué punto del proceso está (si ya se ha contactado, si es cliente activo, etc.).
 
-1.  **Usuarios y Roles**: Hemos creado dos tipos de usuarios. El "Admin" que puede ver todo y borrar cosas, y el "Gestor" que es el que trabaja con las empresas.
-2.  **Gestión de Empresas**: Cada empresa tiene sus datos (web, teléfono, email) y un **Estado** (si ya hemos hablado con ellos, si son clientes, etc.).
-3.  **Contactos**: Dentro de cada empresa podemos añadir a las personas que trabajan allí.
-4.  **Interacciones**: Hemos programado un sistema de mensajes para apuntar cada vez que llamamos a una empresa o nos mandan un mail. Así no se nos olvida nada.
-5.  **Etiquetas (Intereses)**: Se pueden poner etiquetas tanto a empresas como a contactos para luego buscarlos más rápido (por ejemplo: "Tecnología", "Interesado en cursos").
+Contactos: 
+dentro de cada empresa se pueden añadir las personas que trabajan allí.
 
----
+Interacciones: 
+hay un sistema de registro para apuntar cada llamada, email o reunión. Así queda constancia de todo lo que se ha hablado con cada empresa.
 
-## 🛠️ Cómo hacerlo funcionar
+Etiquetas (Intereses): 
+tanto las empresas como los contactos pueden tener etiquetas para facilitar las búsquedas (por ejemplo: "Tecnología" o "Interesado en cursos").
 
-Si quieres probarlo en tu ordenador, sigue estos pasos:
 
-### 1. Preparar el Backend
-Entra en la carpeta del backend, instala las librerías y levanta el servidor:
-```bash
-cd backend
+Cómo ponerlo en marcha
+1. Backend
+Desde la carpeta del backend:
+bashcd backend
 npm install
 npx prisma generate
+npx prisma db push
+node seed-bulk.js
+node seed_interests.js
 npm run dev
-```
-*Nota: El servidor corre en el puerto 3001.*
 
-### 2. Preparar el Frontend
-En otra terminal, entra en la carpeta del frontend:
-```bash
-cd frontend
+2. Frontend
+En otra terminal, desde la carpeta del frontend:
+bashcd frontend
 npm install
 npm run dev
-```
-*La web se abrirá normalmente en el puerto 5173.*
 
----
+Estructura del repositorio
 
-## 📂 Estructura de carpetas
-- `backend/`: Todo el código del servidor, la base de datos SQLite y el esquema de Prisma.
-- `frontend/`: El código de React, las páginas y los estilos CSS.
+backend/ — servidor, base de datos SQLite y esquema de Prisma.
+frontend/ — código de React, páginas y estilos CSS.
 
----
 
-Este proyecto nos ha servido para aprender mucho sobre cómo conectar un frontend con una base de datos real y manejar la autenticación con tokens. ¡Esperamos que os guste!
+Este proyecto nos ha servido para consolidar conceptos como la conexión entre frontend y base de datos, el manejo de sesiones con tokens y la organización de una API REST. Esperamos que os sea útil de referencia.
