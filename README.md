@@ -117,7 +117,7 @@ Debido a la priorización de los módulos críticos de gestión de datos, se han
 
 Separar las ventanas de mensajes y alumnos 
 
--SIstema automatizado para recuperar credenciales de inicio de sesión
+-Sistema automatizado para recuperar credenciales de inicio de sesión
 - 
 **Paginación Avanzada:** Extender el sistema de "Cargar más" a una paginación numérica en caso de que haya muchos datos a cargar.
 
@@ -127,7 +127,5 @@ Separar las ventanas de mensajes y alumnos
 ### 4. Tiempo y Coste
 
 - **Tiempo de Desarrollo:** El proyecto se ha desarrollado a lo largo de dos meses y medio, y aunque el desarrollo ha sido constante, la intensidad no ha sido igual todas las semanas de bido a tener que compaginar el desarrollo de este proyecto con las FCT 
-
-**Coste del Proyecto:** Dado el contexto académico de la asignatura, **la variable COSTE no se ha tenido en cuenta**. No se han imputado gastos de consultoría, horas de desarrollo profesional ni costes de infraestructura de servidor, tratándose de un entorno de aprendizaje y desarrollo de software sin fines comerciales. 
 
 **Coste del Proyecto:**  Debido a que el proyecto se ha hecho en un contexto educativo, no ha habido un coste monetario real, pero asumiendo un flujo de trabajo de 2 horas a la semana por cada integrante del grupo, durante  2 meses y medio, eso hace un total de 60h de trabajo, que teniendo en cuenta que un desarrollador junio  cobra entre 15 a 20€la hora (aproximadamente y dependiendo de la tecnología utilizada), hace que el coste total sea de entre 900 y 1200€ aproximadamente
