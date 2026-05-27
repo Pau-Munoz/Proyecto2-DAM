@@ -42,6 +42,7 @@ tanto las empresas como los contactos pueden tener etiquetas para facilitar las 
 Cómo ponerlo en marcha
 1. Backend
 Desde la carpeta del backend:
+```
 bashcd backend
 npm install
 npx prisma generate
@@ -49,13 +50,14 @@ npx prisma db push
 node seed-bulk.js
 node seed_interests.js
 npm run dev
-
+```
 2. Frontend
 En otra terminal, desde la carpeta del frontend:
+```
 bashcd frontend
 npm install
 npm run dev
-
+```
 Estructura del repositorio
 
 backend/ — servidor, base de datos SQLite y esquema de Prisma.
