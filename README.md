@@ -131,3 +131,20 @@ Separar las ventanas de mensajes y alumnos
 - **Tiempo de Desarrollo:** El proyecto se ha desarrollado a lo largo de dos meses y medio, y aunque el desarrollo ha sido constante, la intensidad no ha sido igual todas las semanas de bido a tener que compaginar el desarrollo de este proyecto con las FCT 
 
 **Coste del Proyecto:**  Debido a que el proyecto se ha hecho en un contexto educativo, no ha habido un coste monetario real, pero asumiendo un flujo de trabajo de 2 horas a la semana por cada integrante del grupo, durante  2 meses y medio, eso hace un total de 60h de trabajo, que teniendo en cuenta que un desarrollador junio  cobra entre 15 a 20€la hora (aproximadamente y dependiendo de la tecnología utilizada), hace que el coste total sea de entre 900 y 1200€ aproximadamente
+
+
+### 5. Reparto de Tareas
+
+Para la organización y desarrollo del proyecto, las responsabilidades se distribuyeron de la siguiente manera entre los integrantes del equipo:
+
+- **Diseño y Creación de la Base de Datos:** Jorge, Óscar y Pau.
+- **Sistema de Login y Usuarios:** Óscar.
+- **Vista de Home (con Header y Secciones):** Óscar.
+- **Vista de Gestores con CRUD:** Óscar.
+- **Primera Versión de la Vista de Empresas con CRUD Simple:** Óscar.
+- **Sección de Sugerencias:** Jorge.
+- **Versión Final de la Vista de Empresas con Filtros:** Jorge.
+- **Vista de Empresa con CRUD para Notas de los Gestores:** Jorge.
+- **Buscador:** Pau.
+- **Vista de Mantenimientos para los Combos:** Pau.
+- **Tags y Búsqueda por Tags:** Pau.
